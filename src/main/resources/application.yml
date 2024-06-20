@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: mslabel
+  profiles:
+    active: dev
+
+  datasource:
+    url: jdbc:mysql://mslabel-db.cyc2p8ojoa5l.ap-northeast-2.rds.amazonaws.com:3306/mslabel
+    username: admin
+    password: 1q2w3e4r
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+application:
+  security:
+    jwt:
+      secret-key: ac68bcfdacdaf425efb13abfc8b09761f0efea8559d655718e06d89c081bbde6
+      expiration: 60000 # 86400000 # 1 day
+      refresh-token:
+        expiration: 604800000 # 7 days

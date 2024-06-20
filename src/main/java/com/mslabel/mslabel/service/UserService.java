@@ -3,7 +3,7 @@ package com.mslabel.mslabel.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mslabel.mslabel.entity.User;
+import com.mslabel.mslabel.model.User;
 import com.mslabel.mslabel.repository.UserRepository;
 
 import java.util.List;

@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.mslabel.mslabel.config.service.JwtService;
 import com.mslabel.mslabel.model.dto.AuthResponse;
+import com.mslabel.mslabel.constants.ErrorMessageConstant;
+import com.mslabel.mslabel.constants.TokenErrorMessageConstant;
 import com.mslabel.mslabel.constants.TokenType;
 import com.mslabel.mslabel.model.entity.Tokens;
 import com.mslabel.mslabel.model.entity.User;
@@ -51,13 +53,13 @@ public class AuthService {
             params.put("accessToken", authResponse.accessToken());
             params.put("expireDate", authResponse.expireDate());
 
-            return JsonResponse.createResponse(HttpStatus.OK.value(), params, "인증 성공");
+            return JsonResponse.createResponse(HttpStatus.OK.value(), params);
         } catch(UsernameNotFoundException e){
             return JsonResponse.createResponse(HttpStatus.UNAUTHORIZED.value(), null, e.getMessage());
         } catch (AuthenticationException e) {
-            return JsonResponse.createResponse(HttpStatus.UNAUTHORIZED.value(), null, "인증 실패");
+            return JsonResponse.createResponse(HttpStatus.UNAUTHORIZED.value(), null, TokenErrorMessageConstant.getFitErrorMessage("AUTH"));
         } catch (Exception e) {
-            return JsonResponse.createResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, "서버 오류");
+            return JsonResponse.createResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, ErrorMessageConstant.getFitErrorMessage("SERVER"));
         }
     }
 

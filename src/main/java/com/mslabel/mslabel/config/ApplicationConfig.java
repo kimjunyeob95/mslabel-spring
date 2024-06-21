@@ -1,7 +1,7 @@
 package com.mslabel.mslabel.config;
 
+import com.mslabel.mslabel.constants.TokenErrorMessageConstant;
 import com.mslabel.mslabel.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-@Slf4j
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
@@ -30,7 +29,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return (username) -> {
             return userRepository.findByEmail(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                    .orElseThrow(() -> new UsernameNotFoundException(TokenErrorMessageConstant.getNotHaveErrorMessage("USER")));
         };
     }
 
@@ -51,6 +50,5 @@ public class ApplicationConfig {
 
     public void logEncodedPassword(String rawPassword) {
         String encodedPassword = passwordEncoder().encode(rawPassword);
-        log.info("Encoded password: {}", encodedPassword);
     }
 }

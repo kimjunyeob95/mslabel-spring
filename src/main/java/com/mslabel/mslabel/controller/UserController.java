@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mslabel.mslabel.model.User;
+import com.mslabel.mslabel.model.entity.User;
 import com.mslabel.mslabel.service.UserService;
 
 

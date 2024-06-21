@@ -1,17 +1,24 @@
 package com.mslabel.mslabel.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mslabel.mslabel.config.service.JwtService;
-import com.mslabel.mslabel.controller.dto.AuthResponse;
-import com.mslabel.mslabel.model.TokenType;
-import com.mslabel.mslabel.model.Tokens;
-import com.mslabel.mslabel.model.User;
+import com.mslabel.mslabel.model.dto.AuthResponse;
+import com.mslabel.mslabel.constants.TokenType;
+import com.mslabel.mslabel.model.entity.Tokens;
+import com.mslabel.mslabel.model.entity.User;
 import com.mslabel.mslabel.repository.TokenRepository;
 import com.mslabel.mslabel.repository.UserRepository;
+import com.mslabel.mslabel.utils.JsonResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
@@ -28,14 +35,30 @@ public class AuthService {
     private final TokenRepository tokenRepository;
 
     // public User authenticate(User user) {
-    public AuthResponse authenticate(User user) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveToken(user, jwtToken);
-        return new AuthResponse( jwtToken, refreshToken);
+    public ResponseEntity<Map<String, Object>> authenticate(User user) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+            String jwtToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            String expireDate = jwtService.expireDate(jwtToken);
+
+            revokeAllUserTokens(user);
+            saveToken(user, jwtToken);
+            AuthResponse authResponse = new AuthResponse(jwtToken, refreshToken, expireDate);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("accessToken", authResponse.accessToken());
+            params.put("expireDate", authResponse.expireDate());
+
+            return JsonResponse.createResponse(HttpStatus.OK.value(), params, "인증 성공");
+        } catch(UsernameNotFoundException e){
+            return JsonResponse.createResponse(HttpStatus.UNAUTHORIZED.value(), null, e.getMessage());
+        } catch (AuthenticationException e) {
+            return JsonResponse.createResponse(HttpStatus.UNAUTHORIZED.value(), null, "인증 실패");
+        } catch (Exception e) {
+            return JsonResponse.createResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, "서버 오류");
+        }
     }
 
     private void revokeAllUserTokens(User user) {
@@ -72,7 +95,8 @@ public class AuthService {
             User user= this.userRepository.findByEmail(userEmail).get();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 String accessToken = jwtService.generateToken(user);
-                AuthResponse authResponse = new AuthResponse(accessToken, refreshToken);
+                String expireDate = jwtService.expireDate(accessToken);
+                AuthResponse authResponse = new AuthResponse(accessToken, refreshToken, expireDate);
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }

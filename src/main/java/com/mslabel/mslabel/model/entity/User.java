@@ -1,4 +1,4 @@
-package com.mslabel.mslabel.model;
+package com.mslabel.mslabel.model.entity;
 
 import lombok.Builder;
 import lombok.Getter;

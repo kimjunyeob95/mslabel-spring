@@ -1,5 +1,6 @@
-package com.mslabel.mslabel.model;
+package com.mslabel.mslabel.model.entity;
 
+import com.mslabel.mslabel.constants.TokenType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

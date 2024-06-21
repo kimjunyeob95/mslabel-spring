@@ -1,6 +1,9 @@
 package com.mslabel.mslabel.config.service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +64,16 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String expireDate(String token) {
+        Date extractExpiration = this.extractExpiration(token);
+
+        // Convert to LocalDateTime in Korean Time Zone
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(extractExpiration.toInstant(), ZoneId.of("Asia/Seoul"));
+        // Format the date time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return localDateTime.format(formatter);
     }
 
 

@@ -1,4 +1,4 @@
-package com.mslabel.mslabel.controller.dto;
+package com.mslabel.mslabel.model.dto;
 
 public record AuthRequest(String email, String password) {
 }

@@ -1,6 +1,6 @@
 package com.mslabel.mslabel.repository;
 
-import com.mslabel.mslabel.model.Tokens;
+import com.mslabel.mslabel.model.entity.Tokens;
 
 import java.util.List;
 

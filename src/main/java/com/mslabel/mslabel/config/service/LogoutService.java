@@ -1,6 +1,6 @@
 package com.mslabel.mslabel.config.service;
 
-import com.mslabel.mslabel.model.Tokens;
+import com.mslabel.mslabel.model.entity.Tokens;
 import com.mslabel.mslabel.repository.TokenRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

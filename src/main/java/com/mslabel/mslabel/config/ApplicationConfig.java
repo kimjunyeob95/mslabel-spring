@@ -1,6 +1,7 @@
 package com.mslabel.mslabel.config;
 
 import com.mslabel.mslabel.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
@@ -37,6 +39,7 @@ public class ApplicationConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setHideUserNotFoundExceptions(false);
         return authProvider;
     }
 
@@ -44,5 +47,10 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    public void logEncodedPassword(String rawPassword) {
+        String encodedPassword = passwordEncoder().encode(rawPassword);
+        log.info("Encoded password: {}", encodedPassword);
     }
 }

@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
     private final AuthService authService;
 
-    @DefaultOperation
     @TokenOperation
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest login) {

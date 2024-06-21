@@ -5,65 +5,60 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Operation(
-    summary = "mslabel API",
-    description = "mslabel API Response",
-    responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "OK",
-            content = @Content(
-                schema = @Schema(
-                    implementation = DefaultOperation.SuccessResponse.class
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Bad Request",
-            content = @Content(
-                schema = @Schema(
-                    implementation = DefaultOperation.ErrorResponse400.class
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = @Content(
-                schema = @Schema(
-                    implementation = DefaultOperation.ErrorResponse401.class
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Not Found",
-            content = @Content(
-                schema = @Schema(
-                    implementation = DefaultOperation.ErrorResponse404.class
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content = @Content(
-                schema = @Schema(
-                    implementation = DefaultOperation.ErrorResponse500.class
-                )
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@ApiResponses(value = {
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(
+            schema = @Schema(
+                implementation = DefaultOperation.SuccessResponse.class
             )
         )
-    }
-)
-
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
+    ),
+    @ApiResponse(
+        responseCode = "400",
+        description = "Bad Request",
+        content = @Content(
+            schema = @Schema(
+                implementation = DefaultOperation.ErrorResponse400.class
+            )
+        )
+    ),
+    @ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized",
+        content = @Content(
+            schema = @Schema(
+                implementation = DefaultOperation.ErrorResponse401.class
+            )
+        )
+    ),
+    @ApiResponse(
+        responseCode = "404",
+        description = "Not Found",
+        content = @Content(
+            schema = @Schema(
+                implementation = DefaultOperation.ErrorResponse404.class
+            )
+        )
+    ),
+    @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+            schema = @Schema(
+                implementation = DefaultOperation.ErrorResponse500.class
+            )
+        )
+    )
+})
 public @interface DefaultOperation {
 
     @Schema(name = "SuccessResponse")

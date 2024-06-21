@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
 @Operation(
     tags = {"인증"},
     summary = "토큰 발급", 
@@ -25,8 +27,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
         )
     )
 )
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
+@DefaultOperation
 public @interface TokenOperation {
     
 }

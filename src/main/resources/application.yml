@@ -12,14 +12,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none
     properties:
       hibernate:
+        format_sql: true
+        show-sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 springdoc:
-  packages-to-scan: com.mslabel.mslabel.controller
+  packages-to-scan: com.labelPrint.mslabel.controller
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
